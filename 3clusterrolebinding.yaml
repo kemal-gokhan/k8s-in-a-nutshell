@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+# This cluster role binding allows anyone in the "manager" group to read secrets in any namespace.
+kind: ClusterRoleBinding
+metadata:
+  name: read-secrets-global
+subjects:
+- kind: Group
+  name: manager # Name is case sensitive
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: secret-reader
+  apiGroup: rbac.authorization.k8s.io
+
+  #https://kubernetes.io/docs/reference/access-authn-authz/rbac/#:~:text=A%20role%20binding%20grants%20the,grants%20that%20access%20cluster%2Dwide.

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginxstate
+  labels:
+    app: nginxstate # has to match .spec.template.metadata.labels
+    tier: nginxstate
+spec:
+  selector:
+    matchLabels:
+      app: nginxstate # has to match .spec.template.metadata.labels
+      tier: nginxstate
+  serviceName: nginxstate #SERVICE EKLE
+  replicas: 4 # by default is 1
+  template:
+    metadata:
+      labels:
+        app: nginxstate # has to match .spec.selector.matchLabels
+        tier: nginxstate
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: nginxstate
+        image:  nginx
+        ports:
+        - containerPort: 80
+          name: nginxstate
+        volumeMounts:
+        - name: nginxstate-persistent-storage
+          mountPath: /var/lib/nginxstate
+      volumes:
+      - name: nginxstate-persistent-storage
+        persistentVolumeClaim:
+          claimName: my-azurefile-nginxstate-1
+
